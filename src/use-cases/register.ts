@@ -10,12 +10,6 @@ interface RegisterUseCaseRequest {
   password: string
 }
 
-/*
-SOLID
-
-D - Dependency inversion principle
-*/
-
 interface RegisterUseCaseResponse {
   user: User
 }

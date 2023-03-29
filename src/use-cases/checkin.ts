@@ -1,3 +1,5 @@
+import { MaxNumberOfCheckInsError } from './errors/max-number-off-check-ins-error'
+import { MaxDistanceError } from './errors/max-distance-error'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
 import { CheckIn } from '@prisma/client'
 import { GymRepository } from '@/repositories/gyms-repository'
@@ -41,7 +43,7 @@ export class CheckinUseCase {
     const MAX_DISTANCE_IN_KILOMETERS = 0.1
 
     if (distance > MAX_DISTANCE_IN_KILOMETERS) {
-      throw new Error()
+      throw new MaxDistanceError()
     }
 
     const checkInOnSameDay = await this.checkInsRepository.findByUserIdOnDate(
@@ -49,7 +51,7 @@ export class CheckinUseCase {
       new Date(),
     )
 
-    if (checkInOnSameDay) throw new Error()
+    if (checkInOnSameDay) throw new MaxNumberOfCheckInsError()
 
     const checkIn = await this.checkInsRepository.create({
       gym_id: gymId,
